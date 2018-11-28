@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Util
+namespace Kakarecos.Util
 {
-    class Converter
+    public class Converter
     {
         public static T JsonPara<T>(string json)
         {
