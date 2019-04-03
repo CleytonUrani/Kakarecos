@@ -7,7 +7,7 @@ namespace Kakarecos.Util
 {
     public class JWT<T>
     {
-        private static readonly string ChaveToken = "TOKENAPPVOALA";
+        private static readonly string ChaveToken = "TOKENAPP";
 
         public bool EhValido { get; set; }
         public T Dados { get; set; }
