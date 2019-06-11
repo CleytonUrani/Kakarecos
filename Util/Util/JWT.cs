@@ -1,16 +1,28 @@
 ﻿using Jose;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Kakarecos.Util
 {
     public class JWT<T>
     {
-        private static readonly string ChaveToken = "TOKENAPPVOALA";
+        public static IConfigurationRoot Configuration { get; set; }
+        private static readonly string ChaveToken = Configuration["TOKENJWT"];
 
         public bool EhValido { get; set; }
         public T Dados { get; set; }
+
+        public JWT()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+
+            Configuration = builder.Build();
+        }
 
         public static string GeraToken(T obj)
         {
