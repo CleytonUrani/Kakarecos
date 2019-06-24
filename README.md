@@ -10,5 +10,5 @@ A ideia é adicionar recursos comuns que todos (ou quase) os projetos precisam, 
 ## Nuget
 https://www.nuget.org/packages/Kakarecos/
 
-Instalação Visual Studio
-Install-Package Kakarecos
+Instalação no Visual Studio:
+<code>Install-Package Kakarecos</code>
