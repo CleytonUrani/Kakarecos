@@ -1,5 +1,4 @@
 ﻿using Jose;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,20 +8,10 @@ namespace Kakarecos.Util
 {
     public class JWT<T>
     {
-        public static IConfigurationRoot Configuration { get; set; }
-        private static readonly string ChaveToken = Configuration["TOKENJWT"];
+        private static readonly string ChaveToken = new Configuracao().ObtemConfiguracao("TOKENJWT");
 
         public bool EhValido { get; set; }
         public T Dados { get; set; }
-
-        public JWT()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-
-            Configuration = builder.Build();
-        }
 
         public static string GeraToken(T obj)
         {
