@@ -7,7 +7,7 @@ namespace Kakarecos.Util
 {
     public class Hash
     {
-        public string GerarMd5(string chave)
+        public static string GerarMd5(string chave)
         {
             using (MD5 md5 = MD5.Create())
             {
