@@ -1,4 +1,6 @@
-﻿namespace Kakarecos.Util
+﻿using System;
+
+namespace Kakarecos.Util
 {
     public class Colecoes
     {
