@@ -1,5 +1,5 @@
 # Kakarecos
-A ideia é adicionar recursos comuns que todos (ou quase) os projetos precisam, como exemplo:
+A ideia é adicionar recursos comuns que todos (ou quase) projetos precisam, como exemplo:
  - Tratamento de caracter especial;
  - Consumo de Web Services de forma fácil;
  - Envio de e-mails;
