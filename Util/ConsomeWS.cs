@@ -11,7 +11,7 @@ namespace Kakarecos.Util
     {
         private static CookieContainer cookies = new CookieContainer();
 
-        public static string ConsumirWS(string wsURL, string param, string action, string tipoAplication, VerboHttp verbo, X509Certificate certificado = null)
+        public static string ConsumirWS(string wsURL, string param, string action, string tipoAplication, VerboHttp verbo, WebHeaderCollection headers, X509Certificate certificado = null)
         {
             try
             {
@@ -19,6 +19,9 @@ namespace Kakarecos.Util
                 requisicao.CookieContainer = cookies;
                 requisicao.Timeout = 300000;
                 requisicao.ContentType = string.Format("application/{0}; charset=utf-8; action={1}", tipoAplication, action);
+
+                if (headers != null)
+                    requisicao.Headers = headers;
 
                 if (certificado != null)
                     requisicao.ClientCertificates.Add(certificado);
