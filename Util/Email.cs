@@ -9,7 +9,7 @@ namespace Kakarecos.Util
 {
     public class Email
     {
-        public void Enviar(string[] para, string assunto, string mensagem, string[] anexos = null)
+        public static bool Enviar(string[] para, string assunto, string mensagem, string[] paraOculto = null, string[] anexos = null)
         {
             try
             {
@@ -17,13 +17,13 @@ namespace Kakarecos.Util
 
                 MailMessage mail = new MailMessage()
                 {
-                    From = new MailAddress(email.De, "Jose Carlos Macoratti")
+                    From = new MailAddress(email.De, email.NomeApresentacao)
                 };
 
                 foreach(string p in para)
                     mail.To.Add(new MailAddress(p));
 
-                foreach (string p in para)
+                foreach (string p in paraOculto)
                     mail.CC.Add(new MailAddress(p));
 
                 mail.Subject = assunto;
@@ -42,21 +42,33 @@ namespace Kakarecos.Util
                     smtp.Credentials = new NetworkCredential(email.Usuario, email.Senha);
                     smtp.EnableSsl = true;
                     smtp.Send(mail);
+                    return true;
                 }
             }
             catch (Exception)
             {
-                throw;
+                return false;
             }
         }
 
-        private ConfiguracaoEmail CarregaConfiguracao()
+        private static ConfiguracaoEmail CarregaConfiguracao()
         {
-            return Converter.JsonPara<ConfiguracaoEmail>(new Configuracao().ObtemConfiguracao("ConfigEmail"));
+            return new ConfiguracaoEmail
+            {
+                Dominio = new Configuracao().ObtemConfiguracao("Dominio"),
+                NomeApresentacao = new Configuracao().ObtemConfiguracao("NomeApresentacao"),
+                Porta = Convert.ToInt32(new Configuracao().ObtemConfiguracao("Porta")),
+                Usuario = new Configuracao().ObtemConfiguracao("Usuario"),
+                Senha = new Configuracao().ObtemConfiguracao("Senha"),
+                De = new Configuracao().ObtemConfiguracao("De"),
+                Para = new string[] { new Configuracao().ObtemConfiguracao("Para") },
+                ParaOculto = new string[] { new Configuracao().ObtemConfiguracao("ParaOculto") },
+            };
         }
 
         private class ConfiguracaoEmail
         {
+            public string NomeApresentacao { get; set; }
             public string Dominio { get; set; }
             public int Porta { get; set; }
             public string Usuario { get; set; }

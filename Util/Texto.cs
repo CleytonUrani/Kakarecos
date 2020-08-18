@@ -7,9 +7,10 @@ namespace Kakarecos.Util
 {
     public class Texto
     {
-        public string RetornaSomenteNumeros(string texto)
+        public static string RetornaSomenteNumeros(string texto)
         {
             return new Regex(@"[^0-9]").Replace(texto, "");
         }
     }
 }
+
