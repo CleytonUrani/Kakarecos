@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Xml.Schema;
 
 namespace Kakarecos.Util
 {
@@ -42,8 +43,9 @@ namespace Kakarecos.Util
 
         public class XML
         {
-            public static void GerarXML(ObjXml xml)
+            public static string GerarXML(ObjXml xml, string schema = "")
             {
+                string xmlReturn = string.Empty;
                 try
                 {
                     StringWriterISO8859 sw = new StringWriterISO8859();
@@ -62,7 +64,6 @@ namespace Kakarecos.Util
                     foreach (var el in xml.Elements)
                     {
                         WriteElements(el, ref writer);
-                        writer.WriteEndElement();
                     }
                     // encerra o elemento raiz
                     writer.WriteEndElement();
@@ -72,13 +73,16 @@ namespace Kakarecos.Util
                     writer.Flush();
                     //Return text from string writer...
 
-                    Console.WriteLine(sw.ToString());
+                    xmlReturn = sw.ToString();
                     //close the Objects
                     writer.Close();
                     sw.Close();
+
+                    return xmlReturn;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
+                    return string.Empty;
                 }
             }
 
@@ -87,14 +91,18 @@ namespace Kakarecos.Util
                 if (!string.IsNullOrEmpty(element.value))
                     writer.WriteElementString(element.key, element.value);
                 else
+                {
                     writer.WriteStartElement(element.key);
 
-                if (element.Elements != null && element.Elements.Any())
-                {
-                    foreach (var el in element.Elements)
+                    if (element.Elements != null && element.Elements.Any())
                     {
-                        WriteElements(el, ref writer);
+                        foreach (var el in element.Elements)
+                        {
+                            WriteElements(el, ref writer);
+                        }
                     }
+
+                    writer.WriteEndElement();
                 }
             }
             private class StringWriterISO8859 : StringWriter
@@ -118,6 +126,35 @@ namespace Kakarecos.Util
 
                 public ElementXml[] Elements { get; set; }
             }
+
+            //public bool ValidaSchema(string xml, string xsd)
+            //{
+            //    XmlReaderSettings booksSettings = new XmlReaderSettings();
+            //    booksSettings.Schemas.Add("http://www.contoso.com/books", XmlReader.Create());
+            //    booksSettings.ValidationType = ValidationType.Schema;
+            //    booksSettings.ValidationEventHandler += new ValidationEventHandler(booksSettingsValidationEventHandler);
+
+            //    XmlReader books = XmlReader.Create("books.xml", booksSettings);
+
+            //    while (books.Read()) { }
+
+            //    return true;
+            //}
+
+            static void booksSettingsValidationEventHandler(object sender, ValidationEventArgs e)
+            {
+                if (e.Severity == XmlSeverityType.Warning)
+                {
+                    Console.Write("WARNING: ");
+                    Console.WriteLine(e.Message);
+                }
+                else if (e.Severity == XmlSeverityType.Error)
+                {
+                    Console.Write("ERROR: ");
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
+    
     }
 }
